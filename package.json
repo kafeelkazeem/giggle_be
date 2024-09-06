@@ -2,6 +2,7 @@
   "name": "giggle_be",
   "version": "1.0.0",
   "description": "The backend for giggle",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js",
