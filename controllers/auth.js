@@ -10,7 +10,7 @@ export const registerCustomer = async (req, res) =>{
     //retrieve the new customer credential from the request body
     const {fullName, email, phoneNumber, location, password} = req.body
     try {
-        //hash the password before storing in the database
+        //encrypt the password before storing in the database
          const hashedPassword = await bcrypt.hash(password, 10)
 
         //store the new customer's credential in the databse
