@@ -10,6 +10,13 @@ export const registerCustomer = async (req, res) =>{
     //retrieve the new customer credential from the request body
     const {fullName, email, phoneNumber, location, password} = req.body
     try {
+
+        // check if account exist
+        const emailExist = await Customer.findOne({email: email})
+        if(emailExist){
+          return res.status(401).json({error: 'Account already exist'})
+        }
+
         //encrypt the password before storing in the database
          const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -20,6 +27,7 @@ export const registerCustomer = async (req, res) =>{
          await newCustomer.save()
 
          return res.status(201).json({success: 'New customer created'})
+         console.log('account created')
 
     } catch (error) {
         console.log(error)
