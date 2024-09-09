@@ -6,7 +6,7 @@ const jwtSecret = process.env.JWTSECRET
 
 //middleware for registering new customer
 export const registerCustomer = async (req, res) =>{
-
+    console.log('request recieved')
     //retrieve the new customer credential from the request body
     const {fullName, email, phoneNumber, location, password} = req.body
     try {
@@ -14,7 +14,7 @@ export const registerCustomer = async (req, res) =>{
          const hashedPassword = await bcrypt.hash(password, 10)
 
         //store the new customer's credential in the databse
-         const newCustomer = await Customer.create({fullName: fullName, email: email, phoneNumber: phoneNumber, location: location, password: hashedPassword})
+         const newCustomer = await Customer.create({fullName: fullName, email: email, phoneNumber: phoneNumber, password: hashedPassword})
 
          //save the data
          await newCustomer.save()
