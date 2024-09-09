@@ -25,9 +25,9 @@ export const registerCustomer = async (req, res) =>{
 
          //save the data
          await newCustomer.save()
-
-         return res.status(201).json({success: 'New customer created'})
+         
          console.log('account created')
+         return res.status(201).json({success: 'New customer created'})
 
     } catch (error) {
         console.log(error)
