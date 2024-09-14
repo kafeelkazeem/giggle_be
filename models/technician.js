@@ -2,7 +2,8 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 
-const CustomerSchema = new Schema({
+// Technician's model
+const TechnicianSchema = new Schema({
     businessName : {
         type: String,
         required: true,
@@ -20,13 +21,14 @@ const CustomerSchema = new Schema({
         required: true
     },
     address : {
-        type: Number,
-        required: true
+        type: String,
+        required: true,
+        default: 'sabon gari kano'
     },
     state : {
         type: String,
         required: true,
-        default: 'sabon gari kano'
+        default: 'kano state'
     },
     password : {
         type : String,
@@ -35,4 +37,4 @@ const CustomerSchema = new Schema({
 }, {timestamps: true})
 
 
-export default mongoose.model('Customer', CustomerSchema)
+export default mongoose.model('Technician', TechnicianSchema)

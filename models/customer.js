@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 
 const Schema = mongoose.Schema
 
+//customer's model
 const CustomerSchema = new Schema({
     fullName : {
         type: String,
