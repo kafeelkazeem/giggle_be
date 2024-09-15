@@ -117,7 +117,7 @@ export const technicianLogin = async (req, res) =>{
       //assign a json web token to the customer
       const token = jwt.sign({id: technician._id, email: technician.email}, jwtSecret, {expiresIn: '4h'} )
 
-      return res.status(200).json({success: 'Logged in successfully', token: token, technician: technician})
+      return res.status(200).json({success: 'Logged in successfully', token: token, user: technician})
 
   } catch (error) {
     console.log(error)
