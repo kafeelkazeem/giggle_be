@@ -2,8 +2,10 @@ import Customer from "../models/customer.js"
 import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import Technician from "../models/technician.js"
+import axios from "axios"
 
 const jwtSecret = process.env.JWTSECRET
+const geoCoding_ApiKey = process.env.OPENCAGE_GEOCODING_API_KEY
 
 //middleware for registering new customer
 export const registerCustomer = async (req, res) =>{
@@ -39,9 +41,10 @@ export const registerCustomer = async (req, res) =>{
 //middleware for registering new technician
 export const registerTechnician = async (req, res) =>{
   const {businessName, category, email, phoneNumber, address, state, password} = req.body
+  let latitude, longitude
   try {
 
-    // check if account exist
+    //check if account exist
     const emailExist = await Technician.findOne({email: email})
     if(emailExist){
       return res.status(401).json({error: 'Account already exist'})
@@ -50,8 +53,20 @@ export const registerTechnician = async (req, res) =>{
     //encrypt the password before storing in the database
     const hashedPassword = await bcrypt.hash(password, 10)
 
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${geoCoding_ApiKey}`;
+
+    const response = await axios.get(url)
+   
+    if (response.data.status.code === 200 && response.data.results.length > 0) {
+      const { lat, lng } = response.data.results[0].geometry;
+      latitude = lat;
+      longitude = lng;
+    } else {
+      return res.status(404).json({ error: 'Location not found' });
+    }
+
     //store the new customer's credential in the databse
-    const newTechnician = await Technician.create({businessName: businessName, category: category, email: email, phoneNumber: phoneNumber, password: hashedPassword})
+    const newTechnician = await Technician.create({businessName: businessName, category: category, email: email, phoneNumber: phoneNumber, address: address, latitude: latitude, longitude: longitude, password: hashedPassword})
 
     //save the data
     await newTechnician.save()

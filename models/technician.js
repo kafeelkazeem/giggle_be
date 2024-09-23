@@ -23,12 +23,19 @@ const TechnicianSchema = new Schema({
     address : {
         type: String,
         required: true,
-        default: 'sabon gari kano'
     },
     state : {
         type: String,
         required: true,
         default: 'kano state'
+    },
+    latitude : {
+        type: Number,
+        required: true
+    },
+    longitude : {
+        type: Number,
+        required: true
     },
     password : {
         type : String,

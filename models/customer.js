@@ -16,11 +16,6 @@ const CustomerSchema = new Schema({
         type: Number,
         required: true
     },
-    location : {
-        type: String,
-        required: true,
-        default: 'sabon gari kano'
-    },
     password : {
         type : String,
         required : true

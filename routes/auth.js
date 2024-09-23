@@ -9,7 +9,6 @@ const customerValidation = [
     body('fullName').trim().notEmpty(),
     body('email').trim().notEmpty().isEmail(),
     body('phoneNumber').trim().notEmpty(),
-    //body('location').trim().notEmpty(),
     body('password').trim().notEmpty().isLength({min: 5}).isAlphanumeric()
 ]
 
@@ -18,8 +17,8 @@ const technicianValidation = [
     body('category').notEmpty(),
     body('email').trim().notEmpty().isEmail(),
     body('phoneNumber').trim().notEmpty(),
-    // body('address').isString().trim().notEmpty(),
-    // body('state').isString().trim().notEmpty(),
+    body('address').isString().trim().notEmpty(),
+    body('state').isString().trim().notEmpty(),
     body('password').trim().notEmpty().isLength({min: 5}).isAlphanumeric()
 ]
 
