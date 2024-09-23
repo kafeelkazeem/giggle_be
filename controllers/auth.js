@@ -53,7 +53,7 @@ export const registerTechnician = async (req, res) =>{
     //encrypt the password before storing in the database
     const hashedPassword = await bcrypt.hash(password, 10)
 
-    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address+state)}&key=${geoCoding_ApiKey}`;
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${geoCoding_ApiKey}`;
 
     const response = await axios.get(url)
    

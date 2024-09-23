@@ -21,5 +21,4 @@ mongoose.connect(DATABASE_URI)
 })
 .catch(err => console.log('not connected'))
 
-
 app.listen(PORT, ()=> console.log('running on port', PORT))
