@@ -52,11 +52,14 @@ export const registerTechnician = async (req, res) =>{
 
     //encrypt the password before storing in the database
     const hashedPassword = await bcrypt.hash(password, 10)
-
+    
+    //api url geocoding api
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${geoCoding_ApiKey}`;
 
+    //send a get request to the api
     const response = await axios.get(url)
-   
+  
+    //check the response for error 
     if (response.data.status.code === 200 && response.data.results.length > 0) {
       const { lat, lng } = response.data.results[0].geometry;
       latitude = lat;
