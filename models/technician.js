@@ -29,6 +29,10 @@ const TechnicianSchema = new Schema({
         required: true,
         default: 'kano state'
     },
+    ratings : {
+        type: Number,
+        default: 1
+    },
     latitude : {
         type: Number,
         required: true
