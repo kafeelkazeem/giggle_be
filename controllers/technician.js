@@ -13,3 +13,19 @@ export const getSelectedCategory = async (req, res) =>{
         return res.status(500).json({error: 'internal server error'})
     }   
 }
+
+export const getTechniciansLocation = async (req, res) =>{
+    const { selectedCategory } = req.query
+    try {
+        let techniciansLocation;
+        if(selectedCategory === 'all'){
+            techniciansLocation = await Technician.find().select('businessName category latitude longitude')
+        }else{
+            techniciansLocation = await Technician.find({category: selectedCategory}).select('businessName category latitude longitude')
+        }
+        return res.status(200).json({techniciansLocation: techniciansLocation})        
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'internal server error'})
+    } 
+}
