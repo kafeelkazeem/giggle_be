@@ -34,6 +34,7 @@ export const getSingleTechnician = async (req, res) =>{
     const { id } = req.query
     try {
         const singleTechnician = await Technician.findById({id})
+        res.status(200).json({singleTechnician: singleTechnician})
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'internal server error'})
