@@ -20,6 +20,9 @@ const TechnicianSchema = new Schema({
         type: String,
         required: true
     },
+    description : {
+        type: String
+    },
     address : {
         type: String,
         required: true,
