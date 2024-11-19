@@ -32,9 +32,12 @@ const TechnicianSchema = new Schema({
         required: true,
         default: 'kano state'
     },
-    ratings : {
+    avgRatings : {
         type: Number,
         default: 1
+    },
+    ratingCount : {
+        type: Number
     },
     latitude : {
         type: Number,
