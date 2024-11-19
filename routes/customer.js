@@ -2,7 +2,7 @@ import express from 'express'
 import { getSelectedCategory, getSingleTechnician, getTechniciansLocation } from '../controllers/customer.js'
 import { body, query } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
-import { leaveReview } from '../controllers/review.js'
+import { getTechnicianReviews, leaveReview } from '../controllers/review.js'
 
 const router = express.Router()
 
@@ -26,7 +26,9 @@ const leaveReviewVal = [
 router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', getSingleTechnician)
+
 router.post('/leaveReview', leaveReviewVal, checkValidation, leaveReview)
+router.get('getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
 
 
 export default router

@@ -11,3 +11,14 @@ export const leaveReview = async (req, res) =>{
         res.status(500).json({error: 'internal server error'})
     }
 }
+
+export const getTechnicianReviews = async (req, res) =>{
+    const {technicianId} = req.query
+    try {
+        const Reviews = await Review.find({technicianId: technicianId})
+        return res.status(200).json({reviews: Reviews})           
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
