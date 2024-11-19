@@ -28,7 +28,7 @@ router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getT
 router.get('/singleTechnician', getSingleTechnician)
 
 router.post('/leaveReview', leaveReviewVal, checkValidation, leaveReview)
-router.get('getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
+router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
 
 
 export default router
