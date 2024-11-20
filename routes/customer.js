@@ -25,7 +25,7 @@ const leaveReviewVal = [
 
 router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
-router.get('/singleTechnician', getSingleTechnician)
+router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
 
 router.post('/leaveReview', leaveReviewVal, checkValidation, leaveReview)
 router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)

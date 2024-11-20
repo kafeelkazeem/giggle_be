@@ -33,9 +33,9 @@ export const getTechniciansLocation = async (req, res) =>{
 
 //middleware to get a technician's profile
 export const getSingleTechnician = async (req, res) =>{
-    const { id } = req.query
+    const { technicianId } = req.query
     try {
-        const singleTechnician = await Technician.findById({id})
+        const singleTechnician = await Technician.findOne({_id: technicianId})
         res.status(200).json({singleTechnician: singleTechnician})
     } catch (error) {
         console.log(error)
