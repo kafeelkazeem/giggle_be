@@ -4,12 +4,12 @@ const Schema = mongoose.Schema
 
 // Review model
 const ReviewSchema = new Schema({
-    technicianId: {
+    technician: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Technician',
         required: true,
     },
-    customerId: {
+    customer: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Customer',
         required: true,
