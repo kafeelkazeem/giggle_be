@@ -8,7 +8,7 @@ export const leaveReview = async (req, res) =>{
         await newReview.save()
         
         //calculate technician's average ratings
-        const reviews = Review.find({technician: technicianId})
+        const reviews = await Review.find({technician: technicianId})
         const totalReviews = reviews.length;
         const avgRatings = reviews.reduce((sum, rev) => sum + rev.rating, 0) / totalReviews;
 
