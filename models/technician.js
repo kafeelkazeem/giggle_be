@@ -39,6 +39,10 @@ const TechnicianSchema = new Schema({
     ratingCount : {
         type: Number
     },
+    reviewCOunt : {
+        type: Number,
+        default: 0
+    },
     latitude : {
         type: Number,
         required: true
