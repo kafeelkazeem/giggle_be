@@ -3,6 +3,7 @@ import { getSelectedCategory, getSingleTechnician, getTechniciansLocation } from
 import { body, query } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { getTechnicianReviews, leaveReview } from '../controllers/review.js'
+import { authenticateJWT } from '../middlewares/authJWT.js'
 
 const router = express.Router()
 
@@ -27,7 +28,7 @@ router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSele
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
 
-router.post('/leaveReview', leaveReviewVal, checkValidation, leaveReview)
+router.post('/leaveReview', authenticateJWT, leaveReviewVal, checkValidation, leaveReview)
 router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
 
 
