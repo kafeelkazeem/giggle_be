@@ -32,3 +32,13 @@ export const getTechnicianReviews = async (req, res) =>{
         res.status(500).json({error: 'internal server error'})
     }
 }
+
+export const deleteReview = async (req, res) =>{
+    const {customerId, reviewId} = req.query
+    try {
+        
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
