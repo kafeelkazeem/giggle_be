@@ -25,7 +25,7 @@ export const leaveReview = async (req, res) =>{
 export const getTechnicianReviews = async (req, res) =>{
     const {technicianId} = req.query
     try {
-        const Reviews = await Review.find({technician: technicianId}).populate('customer', 'fullName');
+        const Reviews = (await Review.find({technician: technicianId}).populate('customer', 'fullName')).reverse();
         return res.status(200).json({reviews: Reviews})           
     } catch (error) {
         console.log(error)
