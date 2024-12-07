@@ -35,6 +35,6 @@ router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], 
 
 router.post('/leaveReview', authenticateJWT, leaveReviewVal, checkValidation, leaveReview)
 router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
-router.delete('/deleteReview', authenticateJWT, deleteReviewVal, checkValidation, deleteReview )
+router.delete('/deleteReview', deleteReviewVal, checkValidation, deleteReview )
 
 export default router
