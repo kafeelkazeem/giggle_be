@@ -1,5 +1,5 @@
 import express from 'express'
-import { getSelectedCategory, getSingleTechnician, getTechniciansLocation } from '../controllers/customer.js'
+import { Search, getSelectedCategory, getSingleTechnician, getTechniciansLocation } from '../controllers/customer.js'
 import { body, query } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { deleteReview, getTechnicianReviews, leaveReview } from '../controllers/review.js'
@@ -32,9 +32,11 @@ const deleteReviewVal = [
 router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
+router.get('/search', [query('query').notEmpty().isString()], checkValidation, Search)
 
 router.post('/leaveReview', authenticateJWT, leaveReviewVal, checkValidation, leaveReview)
 router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
-router.delete('/deleteReview', deleteReviewVal, checkValidation, deleteReview )
+router.delete('/deleteReview', authenticateJWT, deleteReviewVal, checkValidation, deleteReview )
+
 
 export default router

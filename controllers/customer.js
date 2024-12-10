@@ -42,3 +42,7 @@ export const getSingleTechnician = async (req, res) =>{
         return res.status(500).json({error: 'internal server error'})
     }
 }
+
+export const Search = async (req, res) =>{
+    
+}
