@@ -44,5 +44,17 @@ export const getSingleTechnician = async (req, res) =>{
 }
 
 export const Search = async (req, res) =>{
-    
+    const { searchQuery } = req.query
+    try {
+        const technicians = await Technician.find({
+             $or: [
+              { businessName: { $regex: searchQuery, $options: 'i' } },
+              { address: { $regex: searchQuery, $options: 'i' } },
+            ],
+        });
+        res.status(200).json({technicians: technicians});
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'internal server error'})
+    }
 }
