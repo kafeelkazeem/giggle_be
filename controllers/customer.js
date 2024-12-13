@@ -46,10 +46,12 @@ export const getSingleTechnician = async (req, res) =>{
 export const Search = async (req, res) =>{
     const { searchQuery } = req.query
     try {
+        // Escape special characters in the query string
+        const sanitizedQuery = searchQuery.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
         const technicians = await Technician.find({
              $or: [
-              { businessName: { $regex: searchQuery, $options: 'i' } },
-              { address: { $regex: searchQuery, $options: 'i' } },
+              { businessName: { $regex: sanitizedQuery, $options: 'i' } },
+              { address: { $regex: sanitizedQuery, $options: 'i' } },
             ],
         });
         res.status(200).json({technicians: technicians});
