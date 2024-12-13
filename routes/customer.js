@@ -32,7 +32,7 @@ const deleteReviewVal = [
 router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
-router.get('/search', [query('searchQuery').notEmpty().isString()], checkValidation, Search)
+router.get('/search', authenticateJWT, [query('searchQuery').notEmpty().isString()], checkValidation, Search)
 
 router.post('/leaveReview', authenticateJWT, leaveReviewVal, checkValidation, leaveReview)
 router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
