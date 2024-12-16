@@ -1,3 +1,4 @@
+import Customer from "../models/customer.js"
 import Technician from "../models/technician.js"
 import { haversineDistance } from "../util/helpers.js"
 
@@ -59,5 +60,27 @@ export const Search = async (req, res) =>{
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'internal server error'})
+    }
+}
+
+export const changePassword = async (req, res) =>{
+    const {currentPassword, newPassword} = req.body;
+    try {
+        const customer = await Customer.findById(req.user.id)
+        
+        const isCurrentPassword = await bcrypt.compare(currentPassword, customer.password)
+        if(!isCurrentPassword){
+            return res.status(400).json({message: 'Old password incorrect'})
+        }
+        
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+        await Customer.findByIdAndUpdate(req.user.id, {password: hashedPassword}, {runValidators: true})
+
+        return res.status(201).json({message: 'Password changed succesfully'})
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'an error occured'})
     }
 }

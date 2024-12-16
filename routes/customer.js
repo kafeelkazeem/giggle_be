@@ -1,5 +1,5 @@
 import express from 'express'
-import { Search, getSelectedCategory, getSingleTechnician, getTechniciansLocation } from '../controllers/customer.js'
+import { Search, changePassword, getSelectedCategory, getSingleTechnician, getTechniciansLocation } from '../controllers/customer.js'
 import { body, query } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { deleteReview, getTechnicianReviews, leaveReview } from '../controllers/review.js'
@@ -29,6 +29,11 @@ const deleteReviewVal = [
     query('reviewId').notEmpty().isMongoId()
 ]
 
+const changePasswordVal = [
+    body('currentPassword').notEmpty().trim(),
+    body('newPassword').trim().notEmpty().isLength({min: 5}).isAlphanumeric()
+]
+
 router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
@@ -37,6 +42,8 @@ router.get('/search', authenticateJWT, [query('searchQuery').notEmpty().isString
 router.post('/leaveReview', authenticateJWT, leaveReviewVal, checkValidation, leaveReview)
 router.get('/getReview', [query('technicianId').notEmpty().isMongoId()], checkValidation, getTechnicianReviews)
 router.delete('/deleteReview', authenticateJWT, deleteReviewVal, checkValidation, deleteReview )
+
+router.put('/changePassword', authenticateJWT, changePasswordVal, checkValidation, changePassword)
 
 
 export default router
