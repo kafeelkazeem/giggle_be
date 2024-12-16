@@ -1,6 +1,7 @@
 import Review from '../models/review.js'
 import Technician from "../models/technician.js"
 
+//middleware for creating customer review
 export const leaveReview = async (req, res) =>{
     const {customerId, technicianId, rating, review} = req.body
     try {
@@ -22,6 +23,7 @@ export const leaveReview = async (req, res) =>{
     }
 }
 
+//middleware for fetching a technician's review
 export const getTechnicianReviews = async (req, res) =>{
     const {technicianId} = req.query
     try {
@@ -33,6 +35,7 @@ export const getTechnicianReviews = async (req, res) =>{
     }
 }
 
+//middlware for deleting review
 export const deleteReview = async (req, res) =>{
     const {customerId, reviewId} = req.query
     try {
