@@ -1,6 +1,7 @@
 import Customer from "../models/customer.js"
 import Technician from "../models/technician.js"
 import { haversineDistance } from "../util/helpers.js"
+import bcrypt from 'bcryptjs'
 
 //middleware to get list of technician in the category the customer selected
 export const getSelectedCategory = async (req, res) =>{
