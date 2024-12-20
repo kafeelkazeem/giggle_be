@@ -66,11 +66,12 @@ export const Search = async (req, res) =>{
 
 //Middleware to update profile
 export const updateProfile = async (req, res) =>{
+    console.log('recieved')
     const {fullName, phoneNumber} = req.body;
     try {
         await Customer.findByIdAndUpdate(req.user.id, {fullName: fullName, phoneNumber: phoneNumber}, {runValidators: true})
 
-        return res.status(201).json({message: 'Password changed succesfully'})
+        return res.status(201).json({message: 'Profile updated'})
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'an error occured'})
