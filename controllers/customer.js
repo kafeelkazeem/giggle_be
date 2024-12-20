@@ -64,6 +64,20 @@ export const Search = async (req, res) =>{
     }
 }
 
+//Middleware to update profile
+export const updateProfile = async (req, res) =>{
+    const {fullName, phoneNumber} = req.body;
+    try {
+        await Customer.findByIdAndUpdate(req.user.id, {fullName: fullName, phoneNumber: phoneNumber}, {runValidators: true})
+
+        return res.status(201).json({message: 'Password changed succesfully'})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'an error occured'})
+    }
+}
+
+//Middleware to change password
 export const changePassword = async (req, res) =>{
     const {currentPassword, newPassword} = req.body;
     try {
