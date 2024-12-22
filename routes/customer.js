@@ -36,7 +36,7 @@ const updateProfileVal = [
 
 const changePasswordVal = [
     body('currentPassword').notEmpty().trim(),
-    body('newPassword').trim().notEmpty().isLength({min: 5}).isAlphanumeric()
+    body('newPassword').trim().notEmpty().isLength({min: 5}).isAlphanumeric().withMessage('Must be alphanumeric and more than 5 characters')
 ]
 
 router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
