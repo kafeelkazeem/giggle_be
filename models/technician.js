@@ -1,65 +1,108 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 // Technician's model
-const TechnicianSchema = new Schema({
-    fullName : {
-        type: String,
-        required: true
+const TechnicianSchema = new Schema(
+  {
+    fullName: {
+      type: String,
+      required: true,
     },
-    businessName : {
+    businessName: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+    },
+    contact: {
+        phoneNumber: {
+            type: String,
+            required: true,
+        },
+        WhatsAppNumber: {
+            type: String
+        }
+    },
+    socialLinks: {
+        type: [String]
+    },
+    category: {
+      type: String,
+      required: true,
+    },
+    bio: {
+      type: String,
+    },
+    skill: {
+      type: [String],
+    },
+    description: {
+      type: String,
+    },
+    location: {
+      address: {
         type: String,
         required: true,
-    },
-    category : {
+      },
+      state: {
         type: String,
+        required: true, 
+        default: "Kano State",
+      },
+      latitude: {
+        type: Number,
         required: true,
-    },
-    email : {
-        type: String,
-        required: true
-    },
-    phoneNumber : {
-        type: String,
-        required: true
-    },
-    description : {
-        type: String
-    },
-    address : {
-        type: String,
+      },
+      longitude: {
+        type: Number,
         required: true,
+      },
     },
-    state : {
-        type: String,
-        required: true,
-        default: 'kano state'
-    },
-    avgRatings : {
+    rating: {
+      avgRatings: {
         type: Number,
-        default: 1
-    },
-    ratingCount : {
-        type: Number
-    },
-    reviewCOunt : {
+        default: 1,
+      },
+      ratingCount: {
         type: Number,
-        default: 0
-    },
-    latitude : {
+        default: 0,
+      },
+      reviewCount: {
         type: Number,
-        required: true
+        default: 0,
+      },
     },
-    longitude : {
-        type: Number,
-        required: true
+    password: {
+      type: String,
+      required: true,
     },
-    password : {
-        type : String,
-        required : true
-    }
-}, {timestamps: true})
+    profilePicture: {
+      type: String,
+    },
+    pastJobsPicture: {
+      type: [String],
+    },
+    availability: {
+        isAvailable: {
+          type: Boolean,
+          default: true,
+        },
+        hours: {
+          start: {
+            type: String,
+          },
+          end: {
+            type: String, 
+          },
+        },
+    },
+  },
+  { timestamps: true }
+);
 
-
-export default mongoose.model('Technician', TechnicianSchema)
+export default mongoose.model("Technician", TechnicianSchema);
