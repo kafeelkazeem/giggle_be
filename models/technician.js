@@ -4,6 +4,10 @@ const Schema = mongoose.Schema
 
 // Technician's model
 const TechnicianSchema = new Schema({
+    fullName : {
+        type: String,
+        required: true
+    },
     businessName : {
         type: String,
         required: true,
