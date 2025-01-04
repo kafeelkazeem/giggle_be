@@ -1,5 +1,5 @@
 import express from 'express'
-import { Search, changePassword, getSelectedCategory, getSingleTechnician, getTechniciansLocation, updateProfile } from '../controllers/customer.js'
+import { Search, changePassword, getSelectedProfession, getSingleTechnician, getTechniciansLocation, updateProfile } from '../controllers/customer.js'
 import { body, query } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { deleteReview, getTechnicianReviews, leaveReview } from '../controllers/review.js'
@@ -7,14 +7,14 @@ import { authenticateJWT } from '../middlewares/authJWT.js'
 
 const router = express.Router()
 
-const selectedCategoryVal = [
-    query('category').trim().toLowerCase().notEmpty(),
+const selectedProfessionVal = [
+    query('profession').trim().toLowerCase().notEmpty(),
     query('latitude').trim().isNumeric().notEmpty(),
     query('longitude').trim().isNumeric().notEmpty()
 ]
 
 const techniciansLocationVal = [
-    query('selectedCategory').trim().toLowerCase().notEmpty()
+    query('selectedProfession').trim().toLowerCase().notEmpty()
 ]
 
 const leaveReviewVal = [
@@ -39,7 +39,7 @@ const changePasswordVal = [
     body('newPassword').trim().notEmpty().isLength({min: 5}).isAlphanumeric().withMessage('Must be alphanumeric and more than 5 characters')
 ]
 
-router.get('/getSelectedCategory', selectedCategoryVal, checkValidation, getSelectedCategory)
+router.get('/getSelectedProfession', selectedProfessionVal, checkValidation, getSelectedProfession)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
 router.get('/search', authenticateJWT, [query('searchQuery').notEmpty().isString()], checkValidation, Search)

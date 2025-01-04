@@ -1,14 +1,15 @@
 import Customer from "../models/customer.js"
 import Technician from "../models/technician.js"
-import { haversineDistance } from "../util/helpers.js"
+import { capitalize, haversineDistance } from "../util/helpers.js"
 import bcrypt from 'bcryptjs'
 
 //middleware to get list of technician in the category the customer selected
-export const getSelectedCategory = async (req, res) =>{
-    const {category, latitude, longitude} = req.query
+export const getSelectedProfession = async (req, res) =>{
+    const {profession, latitude, longitude} = req.query
     try {
-        const technicians = await Technician.find({category: category.toLowerCase()}).select('businessName category address avgRatings latitude longitude')
-        const nearestTechnician = technicians.filter(i => haversineDistance(latitude, longitude, i.latitude, i.longitude) <= 10000) //technicians within 10km from user's position
+        const technicians = await Technician.find({profession: capitalize(profession)}).select('businessName profession location.address rating.avgRatings location.latitude location.longitude')
+        console.log(technicians)
+        const nearestTechnician = technicians.filter(i => haversineDistance(latitude, longitude, i.location.latitude, i.location.longitude) <= 10000) //technicians within 10km from user's position
         return res.status(200).json({nearestTechnician: nearestTechnician})
     } catch (error) {
         console.log(error)
@@ -18,13 +19,13 @@ export const getSelectedCategory = async (req, res) =>{
 
 //middleware to get the location of technicians base on the category selected
 export const getTechniciansLocation = async (req, res) =>{
-    const { selectedCategory } = req.query
+    const { selectedProfession } = req.query
     try {
         let techniciansLocation;
-        if(selectedCategory === 'all'){
-            techniciansLocation = await Technician.find().select('businessName category latitude longitude')
+        if(selectedProfession === 'all'){
+            techniciansLocation = await Technician.find().select('businessName profession location.latitude location.longitude')
         }else{
-            techniciansLocation = await Technician.find({category: selectedCategory}).select('businessName category latitude longitude')
+            techniciansLocation = await Technician.find({profession: selectedProfession}).select('businessName profession location.latitude location.longitude')
         }
         return res.status(200).json({techniciansLocation: techniciansLocation})        
     } catch (error) {
@@ -54,7 +55,7 @@ export const Search = async (req, res) =>{
         const technicians = await Technician.find({
              $or: [
               { businessName: { $regex: sanitizedQuery, $options: 'i' } },
-              { address: { $regex: sanitizedQuery, $options: 'i' } },
+              { 'location.address':  { $regex: sanitizedQuery, $options: 'i' } },
             ],
         });
         res.status(200).json({technicians: technicians});

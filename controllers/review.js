@@ -13,7 +13,7 @@ export const leaveReview = async (req, res) =>{
         const totalReviews = reviews.length;
         const avgRatings = reviews.reduce((sum, rev) => sum + rev.rating, 0) / totalReviews;
 
-        await Technician.findByIdAndUpdate(technicianId, { avgRatings, reviewCount: totalReviews});
+        await Technician.findByIdAndUpdate(technicianId, { 'rating.avgRatings': avgRatings, 'rating.reviewCount': totalReviews});
 
         return res.status(200).json({success: 'Review added'})
         
@@ -57,7 +57,7 @@ export const deleteReview = async (req, res) =>{
         const totalReviews = reviews.length;
         const avgRatings = reviews.reduce((sum, rev) => sum + rev.rating, 0) / totalReviews;
 
-        await Technician.findByIdAndUpdate(technicianId, { avgRatings, reviewCount: totalReviews});
+        await Technician.findByIdAndUpdate(technicianId, { 'rating.avgRatings': avgRatings, 'rating.reviewCount': totalReviews});
 
         res.status(200).json({success: 'deleted'})
 
