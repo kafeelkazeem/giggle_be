@@ -31,7 +31,7 @@ const TechnicianSchema = new Schema(
     socialLinks: {
         type: [String]
     },
-    category: {
+    profession: {
       type: String,
       required: true,
     },

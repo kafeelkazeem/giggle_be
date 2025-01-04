@@ -44,6 +44,7 @@ export const registerTechnician = async (req, res) => {
     email,
     bio,
     businessName,
+    profession,
     category,
     description,
     address,
@@ -101,6 +102,7 @@ export const registerTechnician = async (req, res) => {
         WhatsAppNumber: whatsappNumber,
       },
       socialLinks,
+      profession,
       skill: skills,
       location: {
         address,

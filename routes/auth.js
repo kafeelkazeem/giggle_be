@@ -18,6 +18,7 @@ const technicianValidation = [
     // Validate businessName
     body('businessName').trim().notEmpty().withMessage('Business name is required'),
     // Validate email
+    body('profession').notEmpty().isString(),
     body('email').trim().notEmpty().withMessage('Email is required').isEmail().withMessage('Invalid email format'),
     // Validate phoneNumber
     body('phoneNumber').trim().notEmpty().withMessage('Phone number is required'),
