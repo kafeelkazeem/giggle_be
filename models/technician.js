@@ -38,9 +38,6 @@ const TechnicianSchema = new Schema(
     bio: {
       type: String,
     },
-    skill: {
-      type: [String],
-    },
     description: {
       type: String,
     },

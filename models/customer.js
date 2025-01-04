@@ -18,7 +18,6 @@ const CustomerSchema = new Schema({
     },
     searchRange : {
         type: Number,
-        required: true,
         default: 10,
     },
     password : {

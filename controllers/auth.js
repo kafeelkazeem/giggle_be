@@ -11,7 +11,7 @@ const jwtSecret = process.env.JWTSECRET
 export const registerCustomer = async (req, res) =>{
   
     //retrieve the new customer credential from the request body
-    const {fullName, email, phoneNumber, location, password} = req.body
+    const {fullName, email, phoneNumber, password} = req.body
     try {
 
         // check if account exist
@@ -57,7 +57,6 @@ export const registerTechnician = async (req, res) => {
     password,
     profilePicture,
     socialLinks,
-    skills,
     pastJobsPicture,
   } = req.body;
 
@@ -103,7 +102,6 @@ export const registerTechnician = async (req, res) => {
       },
       socialLinks,
       profession,
-      skill: skills,
       location: {
         address,
         state,
