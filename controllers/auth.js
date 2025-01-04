@@ -39,59 +39,98 @@ export const registerCustomer = async (req, res) =>{
 }
 
 export const registerTechnician = async (req, res) => {
-  // const { businessName, category, email, phoneNumber, address, state, password } = req.body;
-  // let latitude, longitude;
+  const {
+    fullName,
+    email,
+    bio,
+    businessName,
+    category,
+    description,
+    address,
+    state,
+    phoneNumber,
+    whatsappNumber,
+    isAvailable,
+    startTime,
+    endTime,
+    password,
+    profilePicture,
+    socialLinks,
+    skills,
+    pastJobsPicture,
+  } = req.body;
 
-  // try {
-  //   // Check if account exists
-  //   const emailExist = await Technician.findOne({ email });
-  //   if (emailExist) {
-  //     return res.status(401).json({ error: 'Account already exists' });
-  //   }
+  let latitude, longitude;
 
-  //   // Encrypt the password before storing in the database
-  //   const hashedPassword = await bcrypt.hash(password, 10);
+  try {
+    // Check if the account already exists
+    const emailExist = await Technician.findOne({ email });
+    if (emailExist) {
+      return res.status(401).json({ error: "Account already exists" });
+    }
 
-  //   // API URL for Google Maps Geocoding API
-  //   const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
+    // Encrypt the password before storing it in the database
+    const hashedPassword = await bcrypt.hash(password, 10);
 
-  //   // Send a GET request to the API
-  //   const response = await axios.get(url);
+    // API URL for Google Maps Geocoding API
+    const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${process.env.GOOGLE_MAPS_API_KEY}`;
 
-  //   // Check the response for errors
-  //   if (response.data.status === 'OK' && response.data.results.length > 0) {
-  //     const { lat, lng } = response.data.results[0].geometry.location;
-  //     latitude = lat;
-  //     longitude = lng;
-  //   } else {
-  //     console.log(response.data)
-  //     return res.status(404).json({ error: 'Location not found' });
-  //   }
+    // Send a GET request to the API
+    const response = await axios.get(url);
 
-  //   // Store the new technician's credentials in the database
-  //   const newTechnician = await Technician.create({
-  //     businessName,
-  //     category,
-  //     email,
-  //     phoneNumber,
-  //     address,
-  //     state,
-  //     latitude,
-  //     longitude,
-  //     password: hashedPassword
-  //   });
+    // Check the response for errors
+    if (response.data.status === "OK" && response.data.results.length > 0) {
+      const { lat, lng } = response.data.results[0].geometry.location;
+      latitude = lat;
+      longitude = lng;
+    } else {
+      console.log(response.data);
+      return res.status(404).json({ error: "Location not found" });
+    }
 
-  //   // Save the data
-  //   await newTechnician.save();
+    // Create a new technician object
+    const newTechnician = new Technician({
+      fullName,
+      email,
+      bio,
+      businessName,
+      category,
+      description,
+      contact: {
+        phoneNumber,
+        WhatsAppNumber: whatsappNumber,
+      },
+      socialLinks,
+      skill: skills,
+      location: {
+        address,
+        state,
+        latitude,
+        longitude,
+      },
+      availability: {
+        isAvailable,
+        hours: {
+          start: startTime,
+          end: endTime,
+        },
+      },
+      password: hashedPassword,
+      profilePicture,
+      pastJobsPicture,
+    });
 
-  //   console.log('Account created');
-  //   return res.status(201).json({ success: 'New technician created' });
+    // Save the data in the database
+    await newTechnician.save();
 
-  // } catch (error) {
-  //   console.log(error);
-  //   return res.status(500).json({ error: 'Internal server error' });
-  // }
+    console.log("Account created");
+    return res.status(201).json({ success: "New technician created" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error: "Internal server error" });
+  }
 };
+
 
 
 //middleware for customer login

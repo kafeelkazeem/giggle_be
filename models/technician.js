@@ -50,8 +50,7 @@ const TechnicianSchema = new Schema(
         required: true,
       },
       state: {
-        type: String,
-        required: true, 
+        type: String, 
         default: "Kano State",
       },
       latitude: {
@@ -94,10 +93,10 @@ const TechnicianSchema = new Schema(
         },
         hours: {
           start: {
-            type: String,
+            type: Date,
           },
           end: {
-            type: String, 
+            type: Date, 
           },
         },
     },
