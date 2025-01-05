@@ -1,5 +1,5 @@
 import express from 'express'
-import { Search, changePassword, getSelectedProfession, getSingleTechnician, getTechniciansLocation, updateProfile } from '../controllers/customer.js'
+import { Search, changePassword, getSelectedProfession, getSingleTechnician, getTechniciansLocation, updateProfile, updateSearchRange } from '../controllers/customer.js'
 import { body, query } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { deleteReview, getTechnicianReviews, leaveReview } from '../controllers/review.js'
@@ -39,7 +39,7 @@ const changePasswordVal = [
     body('newPassword').trim().notEmpty().isLength({min: 5}).isAlphanumeric().withMessage('Must be alphanumeric and more than 5 characters')
 ]
 
-router.get('/getSelectedProfession', selectedProfessionVal, checkValidation, getSelectedProfession)
+router.get('/getSelectedProfession', authenticateJWT, selectedProfessionVal, checkValidation, getSelectedProfession)
 router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
 router.get('/search', authenticateJWT, [query('searchQuery').notEmpty().isString()], checkValidation, Search)
@@ -50,5 +50,6 @@ router.delete('/deleteReview', authenticateJWT, deleteReviewVal, checkValidation
 
 router.put('/updateProfile', authenticateJWT, updateProfileVal, checkValidation, updateProfile)
 router.put('/changePassword', authenticateJWT, changePasswordVal, checkValidation, changePassword)
+router.put('/updateSearchRange', authenticateJWT, [body('searchRange').notEmpty().isNumeric()], checkValidation, updateSearchRange)
 
 export default router

@@ -7,9 +7,10 @@ import bcrypt from 'bcryptjs'
 export const getSelectedProfession = async (req, res) =>{
     const {profession, latitude, longitude} = req.query
     try {
+        const customer = await Customer.findById(req.user.id).select('searchRange')
+        const searchRange = customer.searchRange 
         const technicians = await Technician.find({profession: capitalize(profession)}).select('businessName profession location.address rating.avgRatings location.latitude location.longitude')
-        console.log(technicians)
-        const nearestTechnician = technicians.filter(i => haversineDistance(latitude, longitude, i.location.latitude, i.location.longitude) <= 10000) //technicians within 10km from user's position
+        const nearestTechnician = technicians.filter(i => haversineDistance(latitude, longitude, i.location.latitude, i.location.longitude) <= searchRange * 1000) //technicians within 10km from user's position
         return res.status(200).json({nearestTechnician: nearestTechnician})
     } catch (error) {
         console.log(error)
@@ -40,6 +41,7 @@ export const getSingleTechnician = async (req, res) =>{
     try {
         const singleTechnician = await Technician.findOne({_id: technicianId})
         res.status(200).json({singleTechnician: singleTechnician})
+        console.log(singleTechnician)
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'internal server error'})
@@ -67,12 +69,22 @@ export const Search = async (req, res) =>{
 
 //Middleware to update profile
 export const updateProfile = async (req, res) =>{
-    console.log('recieved')
     const {fullName, phoneNumber} = req.body;
     try {
         await Customer.findByIdAndUpdate(req.user.id, {fullName: fullName, phoneNumber: phoneNumber}, {runValidators: true})
-
         return res.status(201).json({message: 'Profile updated'})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'an error occured'})
+    }
+}
+
+//middware to update search range
+export const updateSearchRange = async (req, res) =>{
+    const {searchRange} = req.body
+    try {
+        await Customer.findByIdAndUpdate(req.user.id, {searchRange: searchRange})
+        return res.status(201).json({message: 'Search range updated'})
     } catch (error) {
         console.log(error)
         return res.status(500).json({error: 'an error occured'})
