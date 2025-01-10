@@ -10,7 +10,7 @@ export const getSelectedProfession = async (req, res) =>{
         const customer = await Customer.findById(req.user.id).select('searchRange')
         const searchRange = customer.searchRange 
         const technicians = await Technician.find({profession: capitalize(profession)}).select('businessName profession location.address rating.avgRatings location.latitude location.longitude')
-        const nearestTechnician = technicians.filter(i => haversineDistance(latitude, longitude, i.location.latitude, i.location.longitude) <= searchRange * 1000) //technicians within 10km from user's position
+        const nearestTechnician = technicians.filter(i => haversineDistance(latitude, longitude, i.location.latitude, i.location.longitude) <= searchRange * 1000) //technicians within search range in km from user's position
         return res.status(200).json({nearestTechnician: nearestTechnician})
     } catch (error) {
         console.log(error)
