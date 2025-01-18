@@ -44,3 +44,13 @@ export const uploadProfilePicture = async (req, res) =>{
         }
     })
 }
+
+export const getMyProfile = async (req, res) =>{
+    try {
+        const myProfile = await Technician.findById(req.user.id)
+        res.status(200).json({myProfile})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
