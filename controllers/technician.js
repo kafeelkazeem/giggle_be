@@ -1,5 +1,6 @@
 import Technician from "../models/technician.js"
 import axios from "axios"
+import cloudinary from "../util/cloudinary.js";
 
 export const updateTechnicianProfile = async (req, res) =>{
     const {businessName, profession, address} = req.body
@@ -26,4 +27,20 @@ export const updateTechnicianProfile = async (req, res) =>{
         console.log(error)
         res.status(500).json({error: 'internal server error'})
     }
+}
+
+export const uploadProfilePicture = async (req, res) =>{
+    cloudinary.uploader.upload(req.file.path, async function (err, result){
+        if(err) {
+          console.log(err);
+          return res.status(500).json({success: false,message: "Error"})
+        }
+        try {
+            const technician = await Technician.findByIdAndUpdate(req.user.id, {profilePicture: result.url })
+            res.status(200).json({ success: true, message:"Uploaded!", url: result.url})
+        } catch (error) {
+            console.log(error)
+            res.status(500).json({error: 'internal server error'})
+        }
+    })
 }

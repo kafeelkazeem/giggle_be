@@ -1,8 +1,9 @@
 import express from 'express'
-import { updateTechnicianProfile } from '../controllers/technician.js'
+import { updateTechnicianProfile, uploadProfilePicture } from '../controllers/technician.js'
 import { body } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { authenticateJWT } from '../middlewares/authJWT.js'
+import upload from '../middlewares/multer.js'
 
 const router = express.Router()
 
@@ -14,5 +15,6 @@ const updateProfileValidator = [
 
 
 router.put('/updateTechnicianProfile', authenticateJWT, updateProfileValidator, checkValidation, updateTechnicianProfile)
+router.post('/uploadProfilePicture', authenticateJWT,  upload.single('profileImage'), uploadProfilePicture )
 
 export default router
