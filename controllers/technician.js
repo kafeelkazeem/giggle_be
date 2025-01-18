@@ -45,6 +45,32 @@ export const uploadProfilePicture = async (req, res) =>{
     })
 }
 
+export const uploadPastJobsPicture = async (req, res) => {
+    cloudinary.uploader.upload(req.file.path, async function (err, result){
+        if(err) {
+          console.log(err);
+          return res.status(500).json({success: false,message: "Error"})
+        }
+        try {
+            // Add the new image URL to the `pastJobsPicture` array
+            const technician = await Technician.findByIdAndUpdate(
+                req.user.id,
+                { $push: { pastJobsPicture: result.url } },
+                { new: true } // Return the updated document
+            );
+        
+            res.status(200).json({
+                success: true,
+                message: 'Image uploaded successfully!',
+                images: technician.pastJobsPicture,
+            });
+        } catch (error) {
+            console.error('Error uploading image:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    })
+}
+
 export const getMyProfile = async (req, res) =>{
     try {
         const myProfile = await Technician.findById(req.user.id)
@@ -60,6 +86,16 @@ export const updateBio = async (req, res) =>{
     try {
         await Technician.findByIdAndUpdate(req.user.id, {bio: bio})
         return res.status(201).json({message: 'updated'})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
+
+export const getImages = async (req, res) =>{
+    try {
+        const images = await Technician.findById(req.user.id).select('pastJobsPicture')
+        return res.status(200).json({images})
     } catch (error) {
         console.log(error)
         res.status(500).json({error: 'internal server error'})
