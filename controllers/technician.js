@@ -54,3 +54,14 @@ export const getMyProfile = async (req, res) =>{
         res.status(500).json({error: 'internal server error'})
     }
 }
+
+export const updateBio = async (req, res) =>{
+    const { bio } = req.body
+    try {
+        await Technician.findByIdAndUpdate(req.user.id, {bio: bio})
+        return res.status(201).json({message: 'updated'})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
