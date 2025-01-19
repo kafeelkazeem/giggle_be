@@ -71,6 +71,33 @@ export const uploadPastJobsPicture = async (req, res) => {
     })
 }
 
+export const deleteImage = async (req, res) =>{
+    const { imageUrl } = req.body
+    try {
+        // Extract the public ID of the image from the URL
+        const publicId = imageUrl.split('/').pop().split('.')[0];
+
+        // Delete the image from Cloudinary
+        await cloudinary.uploader.destroy(publicId);
+
+        const technician = await Technician.findByIdAndUpdate(
+            req.user.id,
+            { $pull: { pastJobsPicture: imageUrl } }, // Remove the specific image URL from the array
+            { new: true } // Return the updated document
+        );
+
+        return res.status(200).json({
+            success: true,
+            message: 'Image deleted successfully.',
+            images: technician.pastJobsPicture, // Optional: Return the updated technician
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' })
+    }
+}
+
 export const getMyProfile = async (req, res) =>{
     try {
         const myProfile = await Technician.findById(req.user.id)
