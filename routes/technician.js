@@ -10,7 +10,8 @@ const router = express.Router()
 const updateProfileValidator = [
     body('businessName').trim().isString().notEmpty(),
     body('profession').isString().notEmpty(),
-    body('address').isString().trim().notEmpty()
+    body('address').isString().trim().notEmpty(),
+    body('phoneNumber').trim().notEmpty(),
 ]
 
 const updateContactValidator = [

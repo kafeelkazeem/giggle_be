@@ -3,7 +3,7 @@ import axios from "axios"
 import cloudinary from "../util/cloudinary.js";
 
 export const updateTechnicianProfile = async (req, res) =>{
-    const {businessName, profession, address} = req.body
+    const {businessName, profession, address, WhatsAppNumber, phoneNumber} = req.body
     let latitude, longitude;
     try {
         // API URL for Google Maps Geocoding API
@@ -21,7 +21,7 @@ export const updateTechnicianProfile = async (req, res) =>{
             console.log(response.data);
             return res.status(404).json({ error: "Location not found" });
          }
-        await Technician.findByIdAndUpdate(req.user.id, {businessName, profession, location : {address, latitude, longitude}}, {runValidators: true})
+        await Technician.findByIdAndUpdate(req.user.id, {businessName, profession, contact : {phoneNumber, WhatsAppNumber}, location : {address, latitude, longitude}}, {runValidators: true})
         return res.status(201).json({message: 'Profile updated', latitude, longitude})
     } catch (error) {
         console.log(error)
