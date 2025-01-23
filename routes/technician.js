@@ -1,5 +1,5 @@
 import express from 'express'
-import { addSocials, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateBio, updateContact, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
+import { addSocials, changePassword, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateBio, updateContact, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
 import { body } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { authenticateJWT } from '../middlewares/authJWT.js'
@@ -19,6 +19,11 @@ const updateContactValidator = [
     body('whatsappNumber').isNumeric().notEmpty()
 ]
 
+const changePasswordVal = [
+    body('currentPassword').notEmpty().trim(),
+    body('newPassword').trim().notEmpty().isLength({min: 5}).isAlphanumeric().withMessage('Must be alphanumeric and more than 5 characters')
+]
+
 
 router.put('/updateTechnicianProfile', authenticateJWT, updateProfileValidator, checkValidation, updateTechnicianProfile)
 router.post('/uploadProfilePicture', authenticateJWT,  upload.single('profileImage'), uploadProfilePicture )
@@ -34,5 +39,7 @@ router.put('/updateContact', authenticateJWT, updateContactValidator, checkValid
 router.get('/getSocials', authenticateJWT, getSocials)
 router.post('/addSocial', authenticateJWT, [body('socialLink').notEmpty().isURL().trim()], checkValidation, addSocials)
 router.delete('/removeSocial', authenticateJWT, [body('socialLink').notEmpty().isURL().trim()], checkValidation, removeSocials)
+
+router.put('/changeTechnicianPassword', authenticateJWT, changePasswordVal, checkValidation, changePassword)
 
 export default router

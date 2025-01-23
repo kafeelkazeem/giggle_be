@@ -1,6 +1,7 @@
 import Technician from "../models/technician.js"
 import axios from "axios"
 import cloudinary from "../util/cloudinary.js";
+import bcrypt from 'bcryptjs'
 
 export const updateTechnicianProfile = async (req, res) =>{
     const {businessName, profession, address, WhatsAppNumber, phoneNumber} = req.body
@@ -194,5 +195,28 @@ export const removeSocials = async (req, res) =>{
     } catch (error) {
         console.log(error)
         res.status(500).json({error: 'internal server error'})
+    }
+}
+
+//Middleware to change password
+export const changePassword = async (req, res) =>{
+    const {currentPassword, newPassword} = req.body;
+    try {
+        const technician = await Technician.findById(req.user.id)
+        
+        const isCurrentPassword = await bcrypt.compare(currentPassword, technician.password)
+        if(!isCurrentPassword){
+            return res.status(400).json({message: 'Old password incorrect'})
+        }
+        
+        const hashedPassword = await bcrypt.hash(newPassword, 10)
+
+        await Technician.findByIdAndUpdate(req.user.id, {password: hashedPassword}, {runValidators: true})
+
+        return res.status(201).json({message: 'Password changed succesfully'})
+
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'an error occured'})
     }
 }

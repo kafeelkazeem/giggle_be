@@ -29,9 +29,9 @@ const technicianValidation = [
     // Validate state
     body('state').isString().trim().optional().withMessage('State is required'),
     // Validate password
-    body('password').trim().notEmpty().withMessage('Password is required').isLength({ min: 8 })
+    body('password').trim().notEmpty().withMessage('Password is required').isLength({ min: 5 })
       .withMessage('Password must be at least 8 characters long')
-      .matches(/^[a-zA-Z0-9]+$/)
+      .isAlphanumeric()
       .withMessage('Password must be alphanumeric'),
     // Validate availability (isAvailable)
     body('isAvailable').optional().isBoolean().withMessage('Availability must be a boolean'),
