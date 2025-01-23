@@ -220,3 +220,14 @@ export const changePassword = async (req, res) =>{
         return res.status(500).json({error: 'an error occured'})
     }
 }
+
+export const updateAvailability = async (req, res) =>{
+    const { isAvailable, startTime, endTime} = req.body
+    try {
+        await Technician.findByIdAndUpdate(req.user.id, {'availability.isAvailable': isAvailable, 'availability.hours.start': startTime, 'availability.hours.end': endTime})
+        return res.status(200).json({message: 'updated'})
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'an error occured'})
+    }
+}
