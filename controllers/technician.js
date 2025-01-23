@@ -21,7 +21,10 @@ export const updateTechnicianProfile = async (req, res) =>{
             console.log(response.data);
             return res.status(404).json({ error: "Location not found" });
          }
-        await Technician.findByIdAndUpdate(req.user.id, {businessName, profession, contact : {phoneNumber, WhatsAppNumber}, location : {address, latitude, longitude}}, {runValidators: true})
+        const technician = await Technician.findByIdAndUpdate(req.user.id, {businessName, profession, contact : {phoneNumber, WhatsAppNumber}, location : {address, latitude, longitude}}, {runValidators: true})
+        if(!technician){
+            return res.status(404).json({message: 'Not found'})
+        }
         return res.status(201).json({message: 'Profile updated', latitude, longitude})
     } catch (error) {
         console.log(error)
@@ -37,6 +40,9 @@ export const uploadProfilePicture = async (req, res) =>{
         }
         try {
             const technician = await Technician.findByIdAndUpdate(req.user.id, {profilePicture: result.url })
+            if(!technician){
+                return res.status(404).json({message: 'Not found'})
+            }
             res.status(200).json({ success: true, message:"Uploaded!", url: result.url})
         } catch (error) {
             console.log(error)
@@ -58,6 +64,10 @@ export const uploadPastJobsPicture = async (req, res) => {
                 { $push: { pastJobsPicture: result.url } },
                 { new: true } // Return the updated document
             );
+
+            if(!technician){
+                return res.status(404).json({message: 'Not found'})
+            }
         
             res.status(200).json({
                 success: true,
@@ -86,6 +96,10 @@ export const deleteImage = async (req, res) =>{
             { new: true } // Return the updated document
         );
 
+        if(!technician){
+            return res.status(404).json({message: 'Not found'})
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Image deleted successfully.',
@@ -101,6 +115,9 @@ export const deleteImage = async (req, res) =>{
 export const getMyProfile = async (req, res) =>{
     try {
         const myProfile = await Technician.findById(req.user.id)
+        if(!myProfile){
+            return res.status(404).json({message: 'Not found'})
+        }
         res.status(200).json({myProfile})
     } catch (error) {
         console.log(error)
@@ -134,6 +151,46 @@ export const getImages = async (req, res) =>{
     try {
         const images = await Technician.findById(req.user.id).select('pastJobsPicture')
         return res.status(200).json({images})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
+
+export const getSocials = async (req, res) =>{
+    try {
+        const technician = await Technician.findById(req.user.id).select('socialLinks')
+        return res.status(200).json({technician})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
+
+export const addSocials = async (req, res) =>{
+    const { socialLink } = req.body
+    try {
+        const technician = await Technician.findByIdAndUpdate(
+            req.user.id,
+            { $push: { socialLinks: socialLink } },
+            { new: true } // Return the updated document
+        );
+        res.status(201).json({message: 'Link added'})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
+
+export const removeSocials = async (req, res) =>{
+    const { socialLink } = req.body
+    try {
+        const technician = await Technician.findByIdAndUpdate(
+            req.user.id,
+            { $pull: { socialLinks: socialLink } },
+            { new: true } // Return the updated document
+        );
+        res.status(201).json({message: 'Link removed'})
     } catch (error) {
         console.log(error)
         res.status(500).json({error: 'internal server error'})

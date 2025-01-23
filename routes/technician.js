@@ -1,5 +1,5 @@
 import express from 'express'
-import { deleteImage, getImages, getMyProfile, updateBio, updateContact, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
+import { addSocials, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateBio, updateContact, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
 import { body } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { authenticateJWT } from '../middlewares/authJWT.js'
@@ -24,9 +24,15 @@ router.put('/updateTechnicianProfile', authenticateJWT, updateProfileValidator, 
 router.post('/uploadProfilePicture', authenticateJWT,  upload.single('profileImage'), uploadProfilePicture )
 router.get('/getmyprofile', authenticateJWT, getMyProfile)
 router.put('/updateBio', authenticateJWT, [body('bio').notEmpty().isString().trim()], checkValidation, updateBio)
+
 router.post('/uploadPastJobsPictures', authenticateJWT, upload.single('images'), uploadPastJobsPicture)
 router.get('/getImages', authenticateJWT, getImages)
 router.delete('/deleteImage', authenticateJWT, [body('imageUrl').notEmpty().isURL()], checkValidation, deleteImage)
-router.put('updateContact', authenticateJWT, updateContactValidator, checkValidation, updateContact )
+
+router.put('/updateContact', authenticateJWT, updateContactValidator, checkValidation, updateContact )
+
+router.get('/getSocials', authenticateJWT, getSocials)
+router.post('/addSocial', authenticateJWT, [body('socialLink').notEmpty().isURL().trim()], checkValidation, addSocials)
+router.delete('/removeSocial', authenticateJWT, [body('socialLink').notEmpty().isURL().trim()], checkValidation, removeSocials)
 
 export default router
