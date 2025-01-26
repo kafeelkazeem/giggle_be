@@ -17,6 +17,7 @@ export const registerCustomer = async (req, res) =>{
         // check if account exist
         const emailExist = await Customer.findOne({email: email})
         if(emailExist){
+          console.log('Email already exist')
           return res.status(401).json({error: 'Account already exist'})
         }
 
