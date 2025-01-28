@@ -8,8 +8,8 @@ export function haversineDistance(lat1, lon1, lat2, lon2) {
     const lat2Rad = toRadians(lat2);
     const lon2Rad = toRadians(lon2);
   
-    const dLat = lat2Rad - lat1Rad;
-    const dLon = lon2Rad - lon1Rad;
+    const dLat = lat2Rad - lat1Rad; //change in latitute
+    const dLon = lon2Rad - lon1Rad; //change in logitude
   
     const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
               Math.cos(lat1Rad) * Math.cos(lat2Rad) *
