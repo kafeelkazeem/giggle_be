@@ -3,7 +3,7 @@ import Technician from "../models/technician.js"
 import { capitalize, haversineDistance } from "../util/helpers.js"
 import bcrypt from 'bcryptjs'
 
-//middleware to get list of technician in the category the customer selected
+//middleware to get list of technician in the category the customer selected base on their selected search range
 export const getSelectedProfession = async (req, res) =>{
     const {profession, latitude, longitude} = req.query
     try {
