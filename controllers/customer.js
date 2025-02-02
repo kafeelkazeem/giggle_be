@@ -18,16 +18,11 @@ export const getSelectedProfession = async (req, res) =>{
     }   
 }
 
-//middleware to get the location of technicians base on the category selected
+//middleware to get the location of technicians to display on maps
 export const getTechniciansLocation = async (req, res) =>{
-    const { selectedProfession } = req.query
     try {
-        let techniciansLocation;
-        if(selectedProfession === 'all'){
-            techniciansLocation = await Technician.find().select('businessName profession location.latitude location.longitude')
-        }else{
-            techniciansLocation = await Technician.find({profession: selectedProfession}).select('businessName profession location.latitude location.longitude')
-        }
+        const techniciansLocation = await Technician.find().select('businessName profession location.latitude location.longitude')
+        console.log(techniciansLocation)
         return res.status(200).json({techniciansLocation: techniciansLocation})        
     } catch (error) {
         console.log(error)

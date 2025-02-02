@@ -13,10 +13,6 @@ const selectedProfessionVal = [
     query('longitude').trim().isNumeric().notEmpty()
 ]
 
-const techniciansLocationVal = [
-    query('selectedProfession').trim().toLowerCase().notEmpty()
-]
-
 const leaveReviewVal = [
     body('customerId').notEmpty().isMongoId(),
     body('technicianId').notEmpty().isMongoId(),
@@ -40,7 +36,7 @@ const changePasswordVal = [
 ]
 
 router.get('/getSelectedProfession', authenticateJWT, selectedProfessionVal, checkValidation, getSelectedProfession)
-router.get('/techniciansLocation', techniciansLocationVal, checkValidation, getTechniciansLocation)
+router.get('/techniciansLocation', getTechniciansLocation)
 router.get('/singleTechnician', [query('technicianId').notEmpty().isMongoId()], checkValidation, getSingleTechnician)
 router.get('/search', authenticateJWT, [query('searchQuery').notEmpty().isString()], checkValidation, Search)
 
