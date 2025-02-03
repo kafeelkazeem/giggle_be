@@ -12,6 +12,7 @@ const updateProfileValidator = [
     body('profession').isString().notEmpty(),
     body('address').isString().trim().notEmpty(),
     body('phoneNumber').trim().notEmpty(),
+    body('WhatsappNumber').trim().notEmpty()
 ]
 
 const updateContactValidator = [

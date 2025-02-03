@@ -43,7 +43,7 @@ export const getSingleTechnician = async (req, res) =>{
     }
 }
 
-//middleware to search for a technician
+//middleware to search for a technician by name or address
 export const Search = async (req, res) =>{
     const { searchQuery } = req.query
     try {
