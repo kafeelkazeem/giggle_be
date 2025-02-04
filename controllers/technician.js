@@ -137,6 +137,17 @@ export const updateBio = async (req, res) =>{
     }
 }
 
+export const updateDescription = async (req, res) =>{
+    const { desciption } = req.body
+    try {
+        await Technician.findByIdAndUpdate(req.user.id, {description: desciption})
+        return res.status(201).json({message: 'updated'})
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({error: 'internal server error'})
+    }
+}
+
 export const updateContact = async (req, res) =>{
     const {phoneNumber, whatsappNumber} = req.body
     try {

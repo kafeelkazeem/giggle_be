@@ -1,5 +1,5 @@
 import express from 'express'
-import { addSocials, changePassword, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateAvailability, updateBio, updateContact, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
+import { addSocials, changePassword, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateAvailability, updateBio, updateContact, updateDescription, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
 import { body } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { authenticateJWT } from '../middlewares/authJWT.js'
@@ -48,6 +48,7 @@ router.put('/updateTechnicianProfile', authenticateJWT, updateProfileValidator, 
 router.post('/uploadProfilePicture', authenticateJWT,  upload.single('profileImage'), uploadProfilePicture )
 router.get('/getmyprofile', authenticateJWT, getMyProfile)
 router.put('/updateBio', authenticateJWT, [body('bio').notEmpty().isString().trim()], checkValidation, updateBio)
+router.put('/updateDescription', authenticateJWT, [body('description').notEmpty().isString().trim()], checkValidation, updateDescription)
 
 router.post('/uploadPastJobsPictures', authenticateJWT, upload.single('images'), uploadPastJobsPicture)
 router.get('/getImages', authenticateJWT, getImages)
