@@ -1,5 +1,5 @@
 import express from 'express'
-import { addSocials, changePassword, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateAvailability, updateBio, updateContact, updateDescription, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
+import { addSocials, changePassword, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateAvailability, updateBio, updateDescription, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
 import { body } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { authenticateJWT } from '../middlewares/authJWT.js'
@@ -12,12 +12,7 @@ const updateProfileValidator = [
     body('profession').isString().notEmpty(),
     body('address').isString().trim().notEmpty(),
     body('phoneNumber').trim().notEmpty(),
-    body('WhatsappNumber').trim().notEmpty()
-]
-
-const updateContactValidator = [
-    body('phoneNumber').isNumeric().notEmpty(),
-    body('whatsappNumber').isNumeric().notEmpty()
+    body('WhatsAppNumber').trim().notEmpty()
 ]
 
 const changePasswordVal = [
@@ -53,8 +48,6 @@ router.put('/updateDescription', authenticateJWT, [body('description').notEmpty(
 router.post('/uploadPastJobsPictures', authenticateJWT, upload.single('images'), uploadPastJobsPicture)
 router.get('/getImages', authenticateJWT, getImages)
 router.delete('/deleteImage', authenticateJWT, [body('imageUrl').notEmpty().isURL()], checkValidation, deleteImage)
-
-router.put('/updateContact', authenticateJWT, updateContactValidator, checkValidation, updateContact )
 
 router.get('/getSocials', authenticateJWT, getSocials)
 router.post('/addSocial', authenticateJWT, [body('socialLink').notEmpty().isURL().trim()], checkValidation, addSocials)
