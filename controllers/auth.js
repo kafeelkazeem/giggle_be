@@ -127,6 +127,7 @@ export const registerTechnician = async (req, res) => {
     console.log("Account created");
     return res.status(201).json({ success: "New technician created" });
   } catch (error) {
+    //error handling
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
