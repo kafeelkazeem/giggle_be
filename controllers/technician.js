@@ -221,6 +221,17 @@ export const changePassword = async (req, res) =>{
     }
 }
 
+export const getAvailaibility = async (req, res) =>{
+    try {
+        const technician = await Technician.findById(req.user.id).select('availability.isAvailable availability.hours.start availability.hours.end')
+        console.log(technician)
+        return res.status(200).json(technician)
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({error: 'an error occured'})
+    }
+}
+
 export const updateAvailability = async (req, res) =>{
     const { isAvailable, startTime, endTime} = req.body
     try {

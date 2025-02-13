@@ -1,5 +1,5 @@
 import express from 'express'
-import { addSocials, changePassword, deleteImage, getImages, getMyProfile, getSocials, removeSocials, updateAvailability, updateBio, updateDescription, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
+import { addSocials, changePassword, deleteImage, getAvailaibility, getImages, getMyProfile, getSocials, removeSocials, updateAvailability, updateBio, updateDescription, updateTechnicianProfile, uploadPastJobsPicture, uploadProfilePicture } from '../controllers/technician.js'
 import { body } from 'express-validator'
 import { checkValidation } from '../middlewares/checkValidation.js'
 import { authenticateJWT } from '../middlewares/authJWT.js'
@@ -56,5 +56,6 @@ router.delete('/removeSocial', authenticateJWT, [body('socialLink').notEmpty().i
 router.put('/changeTechnicianPassword', authenticateJWT, changePasswordVal, checkValidation, changePassword)
 
 router.put('/updateAvalaibility', authenticateJWT, isAvailableVal, checkValidation, updateAvailability)
+router.get('/getAvailaibility', authenticateJWT, getAvailaibility)
 
 export default router

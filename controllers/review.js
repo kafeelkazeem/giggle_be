@@ -35,34 +35,41 @@ export const getTechnicianReviews = async (req, res) =>{
     }
 }
 
-//middlware for deleting review
-export const deleteReview = async (req, res) =>{
-    const {customerId, reviewId} = req.query
+//middleware to delete review
+export const deleteReview = async (req, res) => {
+    const { customerId, reviewId } = req.query;
+    
     try {
-        const review = await Review.findById(reviewId)
+        const review = await Review.findById(reviewId);
 
-        if(!review){
-            return res.status(404).json({error: 'review not found'})
+        if (!review) {
+            return res.status(404).json({ error: "Review not found" });
         }
 
-        if(customerId !== review.customer.toString()){
-            return res.status(403).json({error: 'not authorised'})
+        if (customerId !== review.customer.toString()) {
+            return res.status(403).json({ error: "Not authorised" });
         }
 
-        await Review.findByIdAndDelete(reviewId)
+        await Review.findByIdAndDelete(reviewId);
 
-        //calculate technician's average ratings
-        const technicianId = review.technician
-        const reviews = await Review.find({technician: technicianId})
+        // Recalculate technician's average ratings
+        const technicianId = review.technician;
+        const reviews = await Review.find({ technician: technicianId });
+
         const totalReviews = reviews.length;
-        const avgRatings = reviews.reduce((sum, rev) => sum + rev.rating, 0) / totalReviews;
+        const avgRatings = totalReviews > 0 
+            ? reviews.reduce((sum, rev) => sum + rev.rating, 0) / totalReviews 
+            : 0; // Set avgRatings to 0 if no reviews exist
 
-        await Technician.findByIdAndUpdate(technicianId, { 'rating.avgRatings': avgRatings, 'rating.reviewCount': totalReviews});
+        await Technician.findByIdAndUpdate(technicianId, {
+            'rating.avgRatings': avgRatings,
+            'rating.reviewCount': totalReviews
+        });
 
-        res.status(200).json({success: 'deleted'})
+        res.status(200).json({ success: "Deleted" });
 
     } catch (error) {
-        console.log(error)
-        res.status(500).json({error: 'internal server error'})
+        console.log(error);
+        res.status(500).json({ error: "Internal server error" });
     }
-}
+};
